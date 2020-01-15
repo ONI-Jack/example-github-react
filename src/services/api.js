@@ -12,7 +12,7 @@ const fetchUsername = username => {
 }
 
 const fetchUserRepository = usesrname => {
-  const URL = `${BASE_URL}/users/${usesrname}/repo`
+  const URL = `${BASE_URL}/users/${usesrname}/repos?sort=updated`
   return axios
     .get(URL)
     .then(response => response.data)

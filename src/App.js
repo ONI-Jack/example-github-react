@@ -1,4 +1,5 @@
 import React from 'react'
+import './index.css'
 import './Bulma.sass'
 import AppHeader from './components/AppHeader'
 import Routing from './routes'

@@ -2,6 +2,9 @@ import React, { PureComponent } from 'react'
 import { fetchUsername } from '../../actions'
 import { connect } from 'react-redux'
 
+import BackButton from '../../components/BackButton'
+import UserRepository from './UserRepository'
+
 export class UserDetail extends PureComponent {
   componentDidMount() {
     const { match, dispatch } = this.props
@@ -10,13 +13,47 @@ export class UserDetail extends PureComponent {
     dispatch(fetchUsername(username))
   }
   render() {
-    const { data } = this.props
+    const { user } = this.props
     return (
-      <div>
-        <p>UserDetail</p>
-        <p>Username: {data.name}</p>
-        <p>login: {data.login}</p>
-      </div>
+      <section className="section">
+        <div className="container">
+          <BackButton to="/" />
+          <div className="columns">
+            <div className="column is-3">
+              <figure className="image is-square">
+                <img
+                  className="is-rounded"
+                  src={user.avatar_url}
+                  alt="User Avatar"
+                />
+              </figure>
+            </div>
+            <div className="column is-9">
+              <h2 className="title">{user.name}</h2>
+              <p className="subtitle">{user.company}</p>
+
+              <p>{user.location}</p>
+              <p>{user.bio}</p>
+
+              <br />
+
+              <p>
+                <strong>Repos :</strong> {user.public_repos}
+              </p>
+
+              <p>
+                <strong>Following :</strong> {user.following}
+              </p>
+
+              <p>
+                <strong>Followers :</strong> {user.followers}
+              </p>
+            </div>
+          </div>
+
+          {user.login && <UserRepository username={user.login} />}
+        </div>
+      </section>
     )
   }
 }
@@ -24,7 +61,7 @@ export class UserDetail extends PureComponent {
 const mapStateToProps = state => {
   return {
     isFetching: state.user.isFetching,
-    data: state.user.data
+    user: state.user.data
   }
 }
 
