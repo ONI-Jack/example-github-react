@@ -6,7 +6,7 @@ import UserDetail from '../views/users/UserDetail'
 
 const Routing = () => (
   <Switch>
-    <Route exact path="/home" component={Home} />
+    <Route exact path="/" component={Home} />
     <Route exact path="/users/:username" component={UserDetail} />
   </Switch>
 )

@@ -8,6 +8,7 @@ const createAction = name => ({
 
 export const FETCH_USER_NAME = createAction('FETCH_USER_NAME')
 export const FETCH_USER_RESPOSITORIES = createAction('FETCH_USER_RESPOSITORIES')
+export const SEARCH_USERNAME = createAction('SEARCH_USERNAME')
 
 export const fetchUsername = username => async dispatch => {
   dispatch({
@@ -41,6 +42,29 @@ export const fetchUserRepositories = username => async dispatch => {
   } catch (error) {
     dispatch({
       type: FETCH_USER_RESPOSITORIES.FAIELD,
+      payload: error
+    })
+  }
+}
+
+export const searchUsername = (
+  username,
+  items_per_page,
+  current_page
+) => async dispatch => {
+  dispatch({
+    type: SEARCH_USERNAME.PENDING
+  })
+
+  try {
+    const searchUsers = await API.searchUsername(username)
+    dispatch({
+      type: SEARCH_USERNAME.SUCCESS,
+      payload: searchUsers
+    })
+  } catch (error) {
+    dispatch({
+      type: SEARCH_USERNAME.FAIELD,
       payload: error
     })
   }
