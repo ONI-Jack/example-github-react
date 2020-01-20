@@ -47,7 +47,7 @@ export class index extends PureComponent {
     // console.log('currentUsers > ', currentUsers)
 
     // Logic for displaying page numbers
-    const totalPage = Math.ceil(user.items.length / itemPerPage)
+    // const totalPage = Math.ceil(user.items.length / itemPerPage)
     const pageNumbers = []
     for (let i = 1; i <= Math.ceil(user.items.length / itemPerPage); i++) {
       pageNumbers.push(i)

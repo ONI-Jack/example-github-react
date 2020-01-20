@@ -1,31 +1,31 @@
-import React, { PureComponent, Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
+import { lifecycle, compose } from 'recompose'
 
 import { fetchUserRepositories } from '../../actions'
 import RepoCard from '../../components/RepoCard'
 
-export class UserRepository extends PureComponent {
+const addLifeCycle = lifecycle({
   componentDidMount() {
     const { dispatch, username } = this.props
 
     dispatch(fetchUserRepositories(username))
   }
-  render() {
-    const { repos } = this.props
+})
 
-    return (
-      <Fragment>
-        <div className="columns is-multiline">
-          <div className="column is-12">
-            <h2 className="title">Repositories</h2>
-          </div>
-          {repos.map(data => (
-            <RepoCard key={data.id} data={data} />
-          ))}
+const UserRepository = ({ repos }) => {
+  return (
+    <Fragment>
+      <div className="columns is-multiline">
+        <div className="column is-12">
+          <h2 className="title">Repositories</h2>
         </div>
-      </Fragment>
-    )
-  }
+        {repos.map(data => (
+          <RepoCard key={data.id} data={data} />
+        ))}
+      </div>
+    </Fragment>
+  )
 }
 
 const mapStateToProps = state => {
@@ -34,4 +34,5 @@ const mapStateToProps = state => {
     repos: state.repos.data
   }
 }
-export default connect(mapStateToProps)(UserRepository)
+
+export default compose(connect(mapStateToProps), addLifeCycle)(UserRepository)

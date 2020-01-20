@@ -1,61 +1,62 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import { fetchUsername } from '../../actions'
 import { connect } from 'react-redux'
+import { lifecycle, compose } from 'recompose'
 
 import BackButton from '../../components/BackButton'
 import UserRepository from './UserRepository'
 
-export class UserDetail extends PureComponent {
+const addLifecycle = lifecycle({
   componentDidMount() {
     const { match, dispatch } = this.props
     const { username } = match.params
 
     dispatch(fetchUsername(username))
   }
-  render() {
-    const { user } = this.props
-    return (
-      <section className="section">
-        <div className="container">
-          <BackButton to="/" />
-          <div className="columns">
-            <div className="column is-3">
-              <figure className="image is-square">
-                <img
-                  className="is-rounded"
-                  src={user.avatar_url}
-                  alt="User Avatar"
-                />
-              </figure>
-            </div>
-            <div className="column is-9">
-              <h2 className="title">{user.name}</h2>
-              <p className="subtitle">{user.company}</p>
+})
 
-              <p>{user.location}</p>
-              <p>{user.bio}</p>
-
-              <br />
-
-              <p>
-                <strong>Repos :</strong> {user.public_repos}
-              </p>
-
-              <p>
-                <strong>Following :</strong> {user.following}
-              </p>
-
-              <p>
-                <strong>Followers :</strong> {user.followers}
-              </p>
-            </div>
+const UserDetail = ({ user }) => {
+  return (
+    <section className="section">
+      <div className="container">
+        <BackButton to="/" />
+        <div className="columns">
+          <div className="column is-3">
+            <figure className="image is-square">
+              <img
+                className="is-rounded"
+                src={user.avatar_url}
+                alt="User Avatar"
+              />
+            </figure>
           </div>
+          <div className="column is-9">
+            <h2 className="title">{user.name}</h2>
+            <p className="subtitle">{user.company}</p>
 
-          {user.login && <UserRepository username={user.login} />}
+            <p>{user.location}</p>
+            <p>{user.bio}</p>
+
+            <br />
+
+            <p>
+              <strong>Repos :</strong> {user.public_repos}
+            </p>
+
+            <p>
+              <strong>Following :</strong> {user.following}
+            </p>
+
+            <p>
+              <strong>Followers :</strong> {user.followers}
+            </p>
+          </div>
         </div>
-      </section>
-    )
-  }
+
+        {user.login && <UserRepository username={user.login} />}
+      </div>
+    </section>
+  )
 }
 
 const mapStateToProps = state => {
@@ -65,4 +66,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(UserDetail)
+export default compose(connect(mapStateToProps), addLifecycle)(UserDetail)
